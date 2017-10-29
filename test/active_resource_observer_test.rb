@@ -16,9 +16,23 @@ class ActiveResourceObservingTest < ActiveSupport::TestCase
   class PersonObserver < ActiveModel::Observer
     observe :person
 
-    %w( after_create after_destroy after_save after_update
-        before_create before_destroy before_save before_update).each do |method|
-          define_method(method) { |*| log method }
+    callbacks = [
+      :after_commit,
+      :after_create,
+      :after_create_commit,
+      :after_destroy,
+      :after_destroy_commit,
+      :after_save,
+      :after_update,
+      :after_update_commit,
+      :before_create,
+      :before_destroy,
+      :before_save,
+      :before_update
+    ]
+
+    callbacks.each do |method|
+      define_method(method) { |*| log method }
     end
 
     private
